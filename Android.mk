@@ -30,5 +30,30 @@ ifeq ($(TARGET_DEVICE),skipjack)
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
 include $(CLEAR_VARS)
+LOCAL_MODULE       := fstab.skipjack
+LOCAL_MODULE_TAGS  := optional eng
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := rootdir/etc/fstab.skipjack
+LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE       := ueventd.skipjack.rc
+LOCAL_MODULE_TAGS  := optional eng
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES    := rootdir/etc/ueventd.skipjack.rc
+LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+
+# To ensure KERNEL_OUT and TARGET_PREBUILT_INT_KERNEL are defined,
+# kernel/AndroidKernel.mk must be included. While m and regular
+# make builds will include kernel/AndroidKernel.mk, mm and mmm builds
+# do not. Therefore, we need to explicitly include kernel/AndroidKernel.mk.
+# It is safe to include it more than once because the entire file is
+# guarded by "ifeq ($(TARGET_PREBUILT_KERNEL),) ... endif".
+TARGET_KERNEL_PATH := $(TARGET_KERNEL_SOURCE)/AndroidKernel.mk
+include $(TARGET_KERNEL_PATH)
 
 endif
